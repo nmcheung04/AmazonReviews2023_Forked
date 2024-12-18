@@ -117,7 +117,7 @@ def process_meta(args):
         f'raw_meta_{domain}',
         split='full',
         trust_remote_code=True
-    )
+    ).select(range(100000))
 
     meta_dataset = meta_dataset.map(
         clean_metadata,
@@ -142,6 +142,10 @@ if __name__ == '__main__':
         f"0core_timestamp_w_his_{args.domain}",
         trust_remote_code=True
     )
+
+    for split in datasets.keys():
+        datasets[split] = datasets[split].select(range(100000))
+
     item2meta = process_meta(args)
 
     truncated_datasets = {}
